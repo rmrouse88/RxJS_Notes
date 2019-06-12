@@ -1,5 +1,3 @@
-## whaddup ##
-
 ### Error Handling in RxJS ###
 
 Error handling is crucial to ensuring that your application, or more precisely the services and events occuring within it, to `fail gracefully`

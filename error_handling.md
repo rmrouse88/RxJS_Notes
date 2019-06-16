@@ -21,7 +21,7 @@ function myFunction(arg){
 
 The obvious downside of try/catch/finally is that it was originally designed to handle `synchronous` errors.
 
-#### async/await and more powerful promises ####
+#### async/await and the power of promises ####
 
 ES6 brought with it the `async/await` syntax to make working with promises more convenient.  The idea was simple:  Replace the chained Promise async command flow with something that looked and behaved synchronous.
 
@@ -195,68 +195,6 @@ of(1,2,3,4,5).pipe(
                             () => console.log('completed!')
                 )
 ```
-## map ##
 
-Takes in a value, applies a projection function, and returns the result of the projection function as an Observable
-
-```js
-map<T,R>(project: (value, index) => R, thisArg? : any) : OperatorFunction<T,R>
-```
-
-```js
-of(1,2,3,4,5).pipe(
-        map(n => n*2)
-    ).subscribe(val => console.log(val))  // 2, 4, 6, 8 10
-```
-
-Note that our observables are subscribed to prior to the projection, and then are re-wrapped as observables 
-
-## mergeMap ## 
-
->A flattening function that will manage as many concurrent subscriptions as you would like!
-
-
->This function also provides "memory" capabilities since it can remember the value of the Outer Observable that triggered the Inner Observable
-
-```js
-// simplest form of merge-map looks a lot like map, right?
-mergeMap(project: (outerValue: T, index: number) => O, 
-        resultSelector?: ((outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R),
-        concurrent? : number)
-
-```
-Looks a lot like map, but it's project function is expected to return an Observable... an `inner Observable`
- 
-MergeMap will subscribe to the streams created by inner Observables, and merge values produced by those streams 
-
-```js
-concat(of(1).pipe(delay(2500)), of(3).pipe(delay(1000)), of(5).pipe(delay(1000))).pipe(
-    mergeMap(outer => interval(1000).pipe(
-                                        map(() => 10*outer),
-                                        take(3)
-                                        )
-    )).subscribe(val => console.log(val));
-)
-```
-and with memory!
-```js
-//courtesy of https://rxjs-dev.firebaseapp.com/api/operators/mergeMap
-const letters = of('a', 'b', 'c');
-const result = letters.pipe(
-  mergeMap(x => interval(1000).pipe(map(i => x+i))),
-);
-result.subscribe(x => console.log(x));
- 
-// Results in the following:
-// a0
-// b0
-// c0
-// a1
-// b1
-// c1
-// continues to list a,b,c with respective ascending integers
-```
-
-## SwitchMap ##
 
 

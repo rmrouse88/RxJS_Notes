@@ -1,4 +1,4 @@
-## map ##
+## Fundamntal Operators ##
 
 Takes in a value, applies a projection function, and returns the result of the projection function as an Observable.
 
